@@ -1,5 +1,6 @@
 import logging
 import wikipedia
+import constantes
 from telegram import Update
 from telegram.ext import filters, ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler
 
@@ -40,7 +41,7 @@ async def wiki(update, context):
 
 
 if __name__ == '__main__':
-    application = ApplicationBuilder().token('my_telegram_token').build()
+    application = ApplicationBuilder().token(constantes.MY_TELEGRAM_TOKEN).build()
     
     start_handler = CommandHandler('start', start)
     application.add_handler(start_handler)

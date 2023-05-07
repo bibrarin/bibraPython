@@ -1,5 +1,5 @@
 import logging
-import json
+import constantes
 from telegram import Update
 from telegram.ext import filters, ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler
 
@@ -24,7 +24,7 @@ async def suma(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Error, debes ingresar dos numeros")
 
 if __name__ == '__main__':
-    application = ApplicationBuilder().token('my_telegram_token').build()
+    application = ApplicationBuilder().token(constantes.MY_TELEGRAM_TOKEN).build()
     
     start_handler = CommandHandler('start', start)
     application.add_handler(start_handler)
