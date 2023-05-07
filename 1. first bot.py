@@ -1,5 +1,8 @@
 import logging
 import constantes
+import requests 
+import datetime
+from bs4 import BeautifulSoup
 from telegram import Update
 from telegram.ext import filters, ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler
 
@@ -14,7 +17,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
     
-    
 async def suma(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         a = int(update.message.text.split()[1])
@@ -23,6 +25,33 @@ async def suma(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Error, debes ingresar dos numeros")
 
+async def euribor(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        # Conexión con la página web
+        url = "https://www.euribordiario.es/euriboractual.html"
+        response = requests.get(url)
+        fecha_hoy = datetime.date.today()
+        fecha_hoy_str = fecha_hoy.strftime('%d/%m/%Y')
+
+        # Análisis del contenido HTML
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        # Extracción de datos
+        title = soup.title.string
+        paragraphs = [p.text for p in soup.find_all("p")]
+
+        indice_porcentaje = paragraphs[1].find('%')
+
+        # Si no se encuentra el carácter %, retorna un mensaje de error
+        if indice_porcentaje == -1:
+            print('No se encontró el carácter %')
+        # Si se encuentra el carácter %, obtiene los 10 caracteres anteriores al carácter %
+        else:
+            caracteres_anteriores = paragraphs[1][max(0, indice_porcentaje - 5):indice_porcentaje]
+
+        await context.bot.send_message(chat_id=update.effective_chat.id, text='Hoy ' + fecha_hoy_str + ' el valor del Euribor es de: ' + caracteres_anteriores + ' %')
+
+
+
 if __name__ == '__main__':
     application = ApplicationBuilder().token(constantes.MY_TELEGRAM_TOKEN).build()
     
@@ -30,5 +59,6 @@ if __name__ == '__main__':
     application.add_handler(start_handler)
     application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), echo))
     application.add_handler(CommandHandler('suma', suma))
+    application.add_handler(CommandHandler('euribor', euribor))
     
     application.run_polling()
