@@ -1,3 +1,5 @@
 config.json
 constantes.py
 desktop.ini
+__pycache__/
+*.py[cod]
