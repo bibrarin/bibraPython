@@ -1,6 +1,6 @@
 import asyncio
 import telegram
-import json
+import json, constantes
 
 ### Escribe nombre del bot ###
 
@@ -9,7 +9,10 @@ import json
 with open('config.json', 'r') as f:
     config = json.load(f)
 
-bot = telegram.Bot(token=config['my_telegram_token'])
+print(config['my_telegram_token'])
+print(constantes.MY_TELEGRAM_TOKEN)
+
+bot = telegram.Bot(token=constantes.MY_TELEGRAM_TOKEN)
 
 async def initialize_bot():
     await bot.initialize()
