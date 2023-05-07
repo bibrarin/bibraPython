@@ -23,3 +23,9 @@ loop.run_until_complete(initialize_bot())
 # Ahora puedes acceder a las propiedades del bot sin problemas
 print(bot.username)
 print(json.dumps(bot.to_dict()))
+
+
+
+
+
+
