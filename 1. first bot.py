@@ -2,17 +2,17 @@ import logging
 import constantes
 import requests 
 import datetime
+import openai
 from bs4 import BeautifulSoup
 from telegram import Update
 from telegram.ext import filters, ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler
 
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO
 )
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola soy un bot, qué deseas pequeño saltamontes?")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola soy un bot, ¿qué deseas pequeño saltamontes?")
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
@@ -52,13 +52,34 @@ async def euribor(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
+
+async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    openai.api_key = constantes.MY_CHATGPT_TOKEN
+
+    # Contexto del asistente
+    messages = [{"role": "system", "content" : "Eres un asistente de partidas de rol de D&D"}]
+   # content = input("¿Sobre qué quieres hablar, pequeño saltamontes? ")
+    messages.append({"role": "user", "content" : update.message.text})
+
+    response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+
+    response_context = response.choices[0].message.content
+
+    messages.append({"role": "assistant", "content" : response_context})  
+
+    await context.bot.send_message(chat_id=update.effective_chat.id, text= response_context)
+
+
+
+
 if __name__ == '__main__':
     application = ApplicationBuilder().token(constantes.MY_TELEGRAM_TOKEN).build()
     
     start_handler = CommandHandler('start', start)
-    application.add_handler(start_handler)
-    application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), echo))
     application.add_handler(CommandHandler('suma', suma))
     application.add_handler(CommandHandler('euribor', euribor))
+    application.add_handler(CommandHandler('chat', chat))
+    application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), echo))
+    application.add_handler(start_handler)
     
     application.run_polling()
