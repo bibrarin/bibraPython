@@ -14,9 +14,11 @@ logging.basicConfig(
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Hola soy un bot, ¿qué deseas pequeño saltamontes?")
 
+
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
     
+
 async def suma(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         a = int(update.message.text.split()[1])
@@ -24,6 +26,7 @@ async def suma(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id, text=a + b)
     except:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Error, debes ingresar dos numeros")
+
 
 async def euribor(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Conexión con la página web
@@ -49,8 +52,6 @@ async def euribor(update: Update, context: ContextTypes.DEFAULT_TYPE):
             caracteres_anteriores = paragraphs[1][max(0, indice_porcentaje - 5):indice_porcentaje]
 
         await context.bot.send_message(chat_id=update.effective_chat.id, text='Hoy ' + fecha_hoy_str + ' el valor del Euribor es de: ' + caracteres_anteriores + ' %')
-
-
 
 
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):

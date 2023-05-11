@@ -1,21 +1,18 @@
 import openai
 import constantes
-import typer
 from rich import print
-from rich.table import Table
  
+openai.api_key = constantes.MY_CHATGPT_TOKEN
 
-def main():
-
-    openai.api_key = constantes.MY_CHATGPT_TOKEN
+with open("../contextoBot.txt", "r") as f:
+    contenido = f.read()
 
     # Contexto del asistente
-    messages = [{"role": "system", "content" : "Eres un asistente de partidas de rol de D&D"}]
+    messages = [{"role": "system", "content" : contenido}]
 
     while True:
 
-        content = input("¿Sobre qué quieres hablar, pequeño saltamontes? >: ")
-
+        content = input("Pregunta sobre el mundo de fantasía >: ")
         if content == "exit":
             break 
 
@@ -27,9 +24,4 @@ def main():
 
         messages.append({"role": "assistant", "content" : response_context})  
 
-        print(f"[bold green]>: {response_context}[/bold green]")
-
-
-# typer
-if __name__ == "__main__":
-    typer.run(main)
+        print(f"[bold green]>:  {response_context}[/bold green]")
