@@ -27,7 +27,7 @@ def main():
 
         messages.append({"role": "assistant", "content" : response_context})  
 
-        print(f"[bold green] >: {response_context}[/bold green]")
+        print(f"[bold green]>: {response_context}[/bold green]")
 
 
 # typer
