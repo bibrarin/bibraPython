@@ -1,2 +1,3 @@
 # bibraPython
-Proyectos de Python para ir aprendiendo poco a poco
+
+Aprendizaje de Python.
