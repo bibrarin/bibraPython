@@ -43,7 +43,7 @@ def RolangGarros(puntos):
                 winner = 'Ganador es el jugador 1'
             else:
                 winner = 'Ganador es el jugador 2'
-    if winner == ''
+    if winner == '':
         return 'Quedan puntos por disputar'
     else:
         return winner
