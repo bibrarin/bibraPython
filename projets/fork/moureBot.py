@@ -12,7 +12,9 @@ with open("../contextoBot.txt", "r") as f:
 
     while True:
 
-        content = input("Pregunta sobre el mundo de fantasía >: ")
+        print("\n\n[bold blue]Pregunta sobre el mundo de fantasía >: [/bold blue]", end=" ")
+        content = input()
+
         if content == "exit":
             break 
 
@@ -24,4 +26,4 @@ with open("../contextoBot.txt", "r") as f:
 
         messages.append({"role": "assistant", "content" : response_context})  
 
-        print(f"[bold green]>:  {response_context}[/bold green]")
+        print(f"[bold green]\n\n{response_context}[/bold green]")
